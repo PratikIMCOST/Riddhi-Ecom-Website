@@ -2,11 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaticPageController;
+use App\Http\Controllers\ProfileController;
 
-// Route for the home page (index)
+// Static Pages Routes
 Route::get('/', [StaticPageController::class, 'index'])->name('home');
-
-// Routes for other static pages
 Route::get('/shop', [StaticPageController::class, 'shop'])->name('shop');
 Route::get('/collection', [StaticPageController::class, 'collection'])->name('collection');
 Route::get('/magazine', [StaticPageController::class, 'magazine'])->name('magazine');
@@ -19,3 +18,17 @@ Route::get('/cart', [StaticPageController::class, 'cart'])->name('cart');
 Route::get('/checkout', [StaticPageController::class, 'checkout'])->name('checkout');
 Route::get('/single-product', [StaticPageController::class, 'singleProduct'])->name('single-product');
 Route::get('/single-blog', [StaticPageController::class, 'singleBlog'])->name('single-blog');
+
+// Dashboard and Auth Routes
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Authentication Routes (Login, Register)
+require __DIR__.'/auth.php';
