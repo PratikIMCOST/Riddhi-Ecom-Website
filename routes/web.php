@@ -32,3 +32,9 @@ Route::middleware('auth')->group(function () {
 
 // Authentication Routes (Login, Register)
 require __DIR__.'/auth.php';
+
+use App\Http\Controllers\ProductController;
+
+Route::get('/admin/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/admin/products', [ProductController::class, 'store'])->name('products.store');    
+
